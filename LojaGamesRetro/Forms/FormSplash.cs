@@ -4,6 +4,8 @@ public class FormSplash : Form
 {
     private readonly Label lblTitulo = new();
     private readonly Label lblSubtitulo = new();
+    private readonly ProgressBar barra = new();
+    private readonly System.Windows.Forms.Timer timer = new();
 
     public FormSplash()
     {
@@ -27,7 +29,23 @@ public class FormSplash : Form
         lblSubtitulo.TextAlign = ContentAlignment.MiddleCenter;
         lblSubtitulo.Bounds = new Rectangle(0, 160, 600, 30);
 
+        barra.Style = ProgressBarStyle.Continuous;
+        barra.Bounds = new Rectangle(50, 260, 500, 20);
+
         Controls.Add(lblTitulo);
         Controls.Add(lblSubtitulo);
+        Controls.Add(barra);
+
+        timer.Interval = 40;
+        timer.Tick += Timer_Tick;
+        timer.Start();
+    }
+
+    private void Timer_Tick(object? sender, EventArgs e)
+    {
+        if (barra.Value < 100)
+            barra.Value += 1;
+        else
+            timer.Stop();
     }
 }
