@@ -9,6 +9,7 @@ public class FormCards : Form
     private static readonly CultureInfo PtBr = new("pt-BR");
 
     private readonly Label lblTitulo = new();
+    private readonly Label lblContador = new();
     private readonly FlowLayoutPanel painel = new();
 
     public FormCards()
@@ -23,16 +24,25 @@ public class FormCards : Form
         lblTitulo.ForeColor = Color.Gold;
         lblTitulo.AutoSize = false;
         lblTitulo.TextAlign = ContentAlignment.MiddleCenter;
-        lblTitulo.Bounds = new Rectangle(0, 10, 920, 50);
+        lblTitulo.Bounds = new Rectangle(0, 10, 920, 40);
 
-        painel.Bounds = new Rectangle(10, 70, 900, 520);
+        lblContador.Font = new Font("Consolas", 11);
+        lblContador.ForeColor = Color.LightGray;
+        lblContador.AutoSize = false;
+        lblContador.TextAlign = ContentAlignment.MiddleCenter;
+        lblContador.Bounds = new Rectangle(0, 48, 920, 25);
+
+        painel.Bounds = new Rectangle(10, 80, 900, 510);
         painel.AutoScroll = true;
 
         Controls.Add(lblTitulo);
+        Controls.Add(lblContador);
         Controls.Add(painel);
 
         foreach (var jogo in Repositorio.Jogos)
             painel.Controls.Add(CriarCard(jogo));
+
+        AtualizarContador();
     }
 
     private Panel CriarCard(Jogo jogo)
@@ -83,12 +93,26 @@ public class FormCards : Form
             Bounds = new Rectangle(30, 182, 140, 35)
         };
         botao.FlatAppearance.BorderColor = Color.Gold;
+        botao.Click += (s, e) => Comprar(jogo);
 
         card.Controls.Add(capa);
         card.Controls.Add(nome);
         card.Controls.Add(preco);
         card.Controls.Add(botao);
         return card;
+    }
+
+    private void Comprar(Jogo jogo)
+    {
+        Repositorio.Vendas.Add(new Venda(jogo, DateTime.Now));
+        AtualizarContador();
+        MessageBox.Show($"Pedido registrado: {jogo.Nome}", "Compra realizada",
+            MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
+    private void AtualizarContador()
+    {
+        lblContador.Text = $"Pedidos realizados: {Repositorio.Vendas.Count}";
     }
 
     private static Color CorDoConsole(string console) => console switch
