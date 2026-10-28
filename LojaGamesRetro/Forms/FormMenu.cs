@@ -21,12 +21,15 @@ public class FormMenu : Form
 
         btnGames.Text = "Games";
         btnGames.Bounds = new Rectangle(250, 150, 300, 55);
+        btnGames.Click += (s, e) => new FormCards().ShowDialog(this);
 
         btnRelatorio.Text = "Relatório de Vendas";
         btnRelatorio.Bounds = new Rectangle(250, 230, 300, 55);
+        btnRelatorio.Click += (s, e) => new FormRelatorio().ShowDialog(this);
 
         btnSair.Text = "Sair";
         btnSair.Bounds = new Rectangle(250, 310, 300, 55);
+        btnSair.Click += (s, e) => Close();
 
         Controls.Add(lblTitulo);
         Controls.Add(btnGames);
