@@ -44,8 +44,16 @@ public class FormSplash : Form
     private void Timer_Tick(object? sender, EventArgs e)
     {
         if (barra.Value < 100)
+        {
             barra.Value += 1;
+        }
         else
+        {
             timer.Stop();
+            var menu = new FormMenu();
+            menu.FormClosed += (s, args) => Application.Exit();
+            menu.Show();
+            Hide();
+        }
     }
 }
