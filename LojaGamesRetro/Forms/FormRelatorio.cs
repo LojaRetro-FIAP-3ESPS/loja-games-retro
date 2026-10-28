@@ -9,6 +9,7 @@ public class FormRelatorio : Form
 
     private readonly Label lblTitulo = new();
     private readonly DataGridView grid = new();
+    private readonly Label lblTotal = new();
 
     public FormRelatorio()
     {
@@ -26,8 +27,15 @@ public class FormRelatorio : Form
 
         ConfigurarGrid();
 
+        lblTotal.Font = new Font("Consolas", 14, FontStyle.Bold);
+        lblTotal.ForeColor = Color.Gold;
+        lblTotal.AutoSize = false;
+        lblTotal.TextAlign = ContentAlignment.MiddleRight;
+        lblTotal.Bounds = new Rectangle(30, 515, 840, 40);
+
         Controls.Add(lblTitulo);
         Controls.Add(grid);
+        Controls.Add(lblTotal);
 
         CarregarVendas();
     }
@@ -72,5 +80,8 @@ public class FormRelatorio : Form
                 venda.Jogo.Preco.ToString("C", PtBr),
                 venda.Data.ToString("dd/MM/yyyy HH:mm", PtBr));
         }
+
+        var total = Repositorio.Vendas.Sum(v => v.Jogo.Preco);
+        lblTotal.Text = $"Vendas: {Repositorio.Vendas.Count}   |   Total: {total.ToString("C", PtBr)}";
     }
 }
